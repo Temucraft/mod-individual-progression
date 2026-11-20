@@ -283,6 +283,17 @@ IndividualProgression.TbcRacesUnlockProgression = 0
 #
 IndividualProgression.tbcRacesStartingProgression = 0
 
+# IndividualProgression.CustomTbcRaces
+#
+#        Description: (mod-worgoblin-high-elf) Custom races that start in the Draenei or Blood Elf zones (on
+#                     Outland's map, e.g. Naga, Nightborne, Eredar) count as TBC races: TbcRacesUnlockProgression and
+#                     tbcRacesStartingProgression apply to them, and they can enter their start zones before TBC.
+#
+#        Default:     1 - Enabled
+#                     0 - Disabled (only Draenei and Blood Elves are TBC races)
+#
+IndividualProgression.CustomTbcRaces = 1
+
 # IndividualProgression.DeathKnightUnlockProgression
 #
 #        Description: The progression stage at which Death Knight characters can be created.

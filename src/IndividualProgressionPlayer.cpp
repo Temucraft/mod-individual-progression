@@ -2,6 +2,24 @@
 #include "naxxramas_40.h"
 #include "Spell.h"
 
+// WHE (mod-worgoblin-high-elf): with IndividualProgression.CustomTbcRaces, custom races that start in the Draenei or
+// Blood Elf zones (Outland's map, as their Home race does) are TBC races too. Their race IDs differ between builds, so
+// the start position decides.
+static bool IsTBCRace(uint8 race)
+{
+    if (race == RACE_DRAENEI || race == RACE_BLOODELF)
+        return true;
+
+    if (!sIndividualProgression->customTbcRaces)
+        return false;
+
+    for (uint8 playerClass = CLASS_WARRIOR; playerClass < MAX_CLASSES; ++playerClass)
+        if (PlayerInfo const* info = sObjectMgr->GetPlayerInfo(race, playerClass))
+            return info->mapId == MAP_OUTLAND;
+
+    return false;
+}
+
 class IndividualPlayerProgression : public PlayerScript
 {
 
@@ -39,7 +57,7 @@ public:
         }
         else // normal account
         {
-            if ((player->getRace() == RACE_DRAENEI || player->getRace() == RACE_BLOODELF) && sIndividualProgression->tbcRacesStartingProgression && !sIndividualProgression->hasPassedProgression(player, static_cast<ProgressionState>(sIndividualProgression->tbcRacesStartingProgression)))
+            if (IsTBCRace(player->getRace()) && sIndividualProgression->tbcRacesStartingProgression && !sIndividualProgression->hasPassedProgression(player, static_cast<ProgressionState>(sIndividualProgression->tbcRacesStartingProgression)))
             {
                 sIndividualProgression->UpdateProgressionState(player, static_cast<ProgressionState>(sIndividualProgression->tbcRacesStartingProgression));
             }
@@ -641,7 +659,7 @@ public:
                 uint32 accountId = player->GetSession()->GetAccountId();
                 uint8 highestProgression = sIndividualProgression->GetAccountProgression(accountId);
 
-                if ((highestProgression < sIndividualProgression->tbcRacesProgressionLevel) && (player->getRace() != RACE_DRAENEI && player->getRace() != RACE_BLOODELF))
+                if ((highestProgression < sIndividualProgression->tbcRacesProgressionLevel) && !IsTBCRace(player->getRace()))
                 {
                     ChatHandler(player->GetSession()).PSendSysMessage("Progression Level Required = |cff00ffff{}|r", sIndividualProgression->tbcRacesProgressionLevel);
                     return false;
@@ -1329,7 +1347,7 @@ public:
             return false;
 
         if ((!sIndividualProgression->enabled) ||
-            (charRace != RACE_DRAENEI && charRace != RACE_BLOODELF && charClass != CLASS_DEATH_KNIGHT) ||
+            (!IsTBCRace(charRace) && charClass != CLASS_DEATH_KNIGHT) ||
             (!sIndividualProgression->tbcRacesProgressionLevel && !sIndividualProgression->deathKnightProgressionLevel))
         {
             return true;
@@ -1342,7 +1360,7 @@ public:
         uint8 highestProgression = sIndividualProgression->GetAccountProgression(accountId);
         bool allowed = true;
         
-        if ((charRace == RACE_DRAENEI || charRace == RACE_BLOODELF) && sIndividualProgression->tbcRacesProgressionLevel != 0)
+        if (IsTBCRace(charRace) && sIndividualProgression->tbcRacesProgressionLevel != 0)
         {
             if (highestProgression < sIndividualProgression->tbcRacesProgressionLevel)
                 allowed = false;
