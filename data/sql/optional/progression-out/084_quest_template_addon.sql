@@ -1,0 +1,80 @@
+-- Individual Progression "Out": put `quest_template_addon` back to the stock AzerothCore rows.
+-- Generated from the core's data/sql/base + data/sql/updates (db_world) by diffing against IP's world SQL.
+-- 9 IP row(s) removed, 281 stock row(s) given back their stock values (only the columns IP changed, and only where they still hold IP's value), 0 stock row(s) put back.
+-- Safe to run more than once.
+
+START TRANSACTION;
+
+DELETE FROM `quest_template_addon` WHERE `ID` IN (108743, 108744, 108745, 108746, 108747, 108850, 108855, 109681, 109684);
+UPDATE `quest_template_addon` SET `AllowableClasses` = 0 WHERE `ID` IN (9086, 9087, 9088, 9089, 9090, 9091, 9092, 9093) AND `AllowableClasses` = 1024;
+UPDATE `quest_template_addon` SET `AllowableClasses` = 0 WHERE `ID` IN (792) AND `AllowableClasses` = 1279;
+UPDATE `quest_template_addon` SET `AllowableClasses` = 0 WHERE `ID` IN (9095, 9096, 9097, 9098, 9099, 9100, 9101, 9102) AND `AllowableClasses` = 128;
+UPDATE `quest_template_addon` SET `AllowableClasses` = 0 WHERE `ID` IN (9111, 9112, 9113, 9114, 9115, 9116, 9117, 9118) AND `AllowableClasses` = 16;
+UPDATE `quest_template_addon` SET `AllowableClasses` = 0 WHERE `ID` IN (9103, 9104, 9105, 9106, 9107, 9108, 9109, 9110) AND `AllowableClasses` = 256;
+UPDATE `quest_template_addon` SET `AllowableClasses` = 0 WHERE `ID` IN (9068, 9069, 9070, 9071, 9072, 9073, 9074, 9075) AND `AllowableClasses` = 64;
+UPDATE `quest_template_addon` SET `AllowableClasses` = 0 WHERE `ID` IN (9078) AND `AllowableClasses` = 8;
+UPDATE `quest_template_addon` SET `AllowableClasses` = 128 WHERE `ID` IN (9077, 9079, 9080, 9081, 9082, 9083, 9084) AND `AllowableClasses` = 8;
+UPDATE `quest_template_addon` SET `AllowableClasses` = 8 WHERE `ID` IN (9054, 9055, 9056, 9057, 9058, 9059, 9060, 9061) AND `AllowableClasses` = 4;
+UPDATE `quest_template_addon` SET `ExclusiveGroup` = 0 WHERE `ID` IN (14199) AND `ExclusiveGroup` = 24579;
+UPDATE `quest_template_addon` SET `ExclusiveGroup` = 8368 WHERE `ID` IN (8368, 8389, 8426, 8427, 8428, 8429, 8430, 8431, 8432, 8433, 8434, 8435) AND `ExclusiveGroup` = 0;
+UPDATE `quest_template_addon` SET `ExclusiveGroup` = 8370 WHERE `ID` IN (8370, 8390, 8436, 8437, 8438, 8439, 8440, 8441, 8442, 8443) AND `ExclusiveGroup` = 0;
+UPDATE `quest_template_addon` SET `ExclusiveGroup` = 8372 WHERE `ID` IN (8372, 8386, 8399, 8400, 8401, 8402, 8403, 8404, 8405, 8406, 8407, 8408) AND `ExclusiveGroup` = 0;
+UPDATE `quest_template_addon` SET `ExclusiveGroup` = 8374 WHERE `ID` IN (8374, 8384, 8391, 8392, 8393, 8394, 8395, 8396, 8397, 8398) AND `ExclusiveGroup` = 0;
+UPDATE `quest_template_addon` SET `NextQuestID` = 0 WHERE `ID` IN (11222) AND `NextQuestID` = 11223;
+UPDATE `quest_template_addon` SET `NextQuestID` = 0 WHERE `ID` IN (1485) AND `NextQuestID` = 1499;
+UPDATE `quest_template_addon` SET `NextQuestID` = 0 WHERE `ID` IN (9684) AND `NextQuestID` = 9685;
+UPDATE `quest_template_addon` SET `NextQuestID` = 13430 WHERE `ID` IN (10884, 10885, 10886) AND `NextQuestID` = 10888;
+UPDATE `quest_template_addon` SET `PrevQuestID` = -1799 WHERE `ID` IN (4962, 4963) AND `PrevQuestID` = 1799;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11523) AND `PrevQuestID` = 11496;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11547) AND `PrevQuestID` = 11513;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11521, 11541) AND `PrevQuestID` = 11520;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11546) AND `PrevQuestID` = 11521;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11525) AND `PrevQuestID` = 11524;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11533) AND `PrevQuestID` = 11532;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11544) AND `PrevQuestID` = 11535;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11537) AND `PrevQuestID` = 11538;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11540) AND `PrevQuestID` = 11539;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11543) AND `PrevQuestID` = 11542;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11536) AND `PrevQuestID` = 11544;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (11548) AND `PrevQuestID` = 11545;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (13475) AND `PrevQuestID` = 13476;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (13477) AND `PrevQuestID` = 13478;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (374) AND `PrevQuestID` = 427;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (546) AND `PrevQuestID` = 527;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (7381) AND `PrevQuestID` = 7181;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (7382) AND `PrevQuestID` = 7202;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (7421) AND `PrevQuestID` = 7361;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (7422) AND `PrevQuestID` = 7362;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (7423) AND `PrevQuestID` = 7363;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (7424) AND `PrevQuestID` = 7364;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (7425) AND `PrevQuestID` = 7365;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (7426) AND `PrevQuestID` = 7366;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (5041) AND `PrevQuestID` = 871;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (1130) AND `PrevQuestID` = 882;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (9232) AND `PrevQuestID` = 9033;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (9033) AND `PrevQuestID` = 9121;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 0 WHERE `ID` IN (9234, 9235, 9236, 9237, 9238, 9239, 9240, 9241, 9242, 9243, 9244, 9245, 9246) AND `PrevQuestID` = 9233;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 11534 WHERE `ID` IN (11514) AND `PrevQuestID` = 11513;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 24428 WHERE `ID` IN (7497) AND `PrevQuestID` = 7496;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 24429 WHERE `ID` IN (7493) AND `PrevQuestID` = 7490;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 4976 WHERE `ID` IN (4964) AND `PrevQuestID` = 4962;
+UPDATE `quest_template_addon` SET `PrevQuestID` = 4976 WHERE `ID` IN (4975) AND `PrevQuestID` = 4963;
+UPDATE `quest_template_addon` SET `ProvidedItemCount` = 0 WHERE `ID` IN (9644) AND `ProvidedItemCount` = 1;
+UPDATE `quest_template_addon` SET `RequiredMinRepFaction` = 529 WHERE `ID` IN (9236, 9237, 9240, 9243, 9246) AND `RequiredMinRepFaction` = 0;
+UPDATE `quest_template_addon` SET `RequiredMinRepValue` = 42000 WHERE `ID` IN (9236, 9237, 9240, 9243, 9246) AND `RequiredMinRepValue` = 0;
+UPDATE `quest_template_addon` SET `RewardMailDelay` = 172800 WHERE `ID` IN (9295, 9299, 9300, 9301, 9302, 9304) AND `RewardMailDelay` = 604800;
+UPDATE `quest_template_addon` SET `RewardMailTemplateID` = 172 WHERE `ID` IN (9299) AND `RewardMailTemplateID` = 173;
+UPDATE `quest_template_addon` SET `RewardMailTemplateID` = 173 WHERE `ID` IN (9295) AND `RewardMailTemplateID` = 172;
+UPDATE `quest_template_addon` SET `RewardMailTemplateID` = 175 WHERE `ID` IN (9302) AND `RewardMailTemplateID` = 176;
+UPDATE `quest_template_addon` SET `RewardMailTemplateID` = 176 WHERE `ID` IN (9301) AND `RewardMailTemplateID` = 175;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 0 WHERE `ID` IN (8548, 8572, 8573, 8574, 8610, 9317, 9318, 9320, 9321, 9333, 9334, 9335, 9336, 9337, 9341, 9343, 13475, 13477) AND `SpecialFlags` = 1;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 0 WHERE `ID` IN (7631) AND `SpecialFlags` = 2;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 1 WHERE `ID` IN (7081, 7082, 7181, 7202, 7361, 7362, 7363, 7364, 7365, 7366, 7367, 7368, 7381, 7382, 7401, 7402, 7509, 8369, 8375, 8609, 11513, 11520, 11524, 11532, 11535, 11538, 11539, 11544, 11545) AND `SpecialFlags` = 0;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 1 WHERE `ID` IN (7301, 7302) AND `SpecialFlags` = 2;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 2 WHERE `ID` IN (9260, 9261, 9262, 9263, 9264, 9265, 10879) AND `SpecialFlags` = 0;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 33 WHERE `ID` IN (11542) AND `SpecialFlags` = 32;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 35 WHERE `ID` IN (11496) AND `SpecialFlags` = 34;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 36 WHERE `ID` IN (5441, 6395) AND `SpecialFlags` = 0;
+UPDATE `quest_template_addon` SET `SpecialFlags` = 4 WHERE `ID` IN (6, 7, 8, 15, 18, 21, 33, 363, 364, 376, 380, 381, 382, 383, 747, 750, 752, 753, 755, 757, 763, 780, 783, 788, 789, 790, 792, 794, 804, 805, 1516, 1517, 1518, 1520, 1521, 1599, 1656, 2158, 2161, 2383, 3093, 3095, 3096, 3097, 3098, 3099, 3100, 3101, 3102, 3103, 3104, 3105, 3376, 3901, 3902, 3903, 3904, 3905, 4402, 4641, 5261, 6394) AND `SpecialFlags` = 0;
+
+COMMIT;
