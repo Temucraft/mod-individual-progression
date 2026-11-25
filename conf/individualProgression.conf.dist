@@ -10,15 +10,33 @@
 
 # IndividualProgression.Enable
 #
-#        Description: Enable Individual Progression Module
-#                     Please note that like all AzerothCore modules, database changes cannot be undone through config settings.
-#                     This means that world changes like restoring Vanilla quests and NPC stats will remain in place even if disabled.
-#                     Disabling the module will disable functionality like access restrictions, level caps, damage adjustments, etc.
+#        Description: "In" (1) or "Out" (0). See "In / Out" in the module README.
+#                     Out: IP is installed but changes nothing in the base game - no level caps, map gates,
+#                     auras, XP or damage changes, no core setting overrides, and the core's own Naxxramas
+#                     scripts run. Era NPCs and objects answer as for the last stage (18): the Wrath world.
+#                     In: IP's full progression.
+#                     The world database must match: Out = stock rows (run data/sql/optional/progression-out),
+#                     In = IP's world SQL (run progression-out, then data/sql/optional/progression-in).
+#                     Config alone does not change the database. Changing this needs a restart.
+#                     .progression status says whether config and database agree.
 #
-#        Default:     1 - Enabled
-#                     0 - Disabled
+#        Default:     0 - Out
+#                     1 - In
 #
-IndividualProgression.Enable = 1
+IndividualProgression.Enable = 0
+
+# IndividualProgression.OverrideCoreConfig
+#
+#        Description: Lets IP change core (worldserver.conf) settings after config load. Only acts with
+#                     Enable = 1. When 0, SimpleConfigOverride, MaxMonsterSight, DisableRDF and
+#                     DisableQuestMarkers below change nothing, whatever they are set to.
+#                     IP itself still needs EnablePlayerSettings = 1 and DBC.EnforceItemAttributes = 0 when In:
+#                     set them in worldserver.conf (mod-temucraft.conf does) or set this to 1.
+#
+#        Default:     0 - Do not touch core settings
+#                     1 - Apply the overrides below (IP's old behaviour)
+#
+IndividualProgression.OverrideCoreConfig = 0
 
 # IndividualProgression.EnforceGroupRules
 #
@@ -172,7 +190,8 @@ IndividualProgression.FishingFix = 1
 
 # IndividualProgression.SimpleConfigOverride
 #
-#        Description: If enabled, it will allow this module to set a few AzerothCore config values.
+#        Description: Only with Enable = 1 and OverrideCoreConfig = 1.
+#                     If enabled, it will allow this module to set a few AzerothCore config values.
 #                     The first two are required for this module.
 #                     If you don't want the reduced water breath timer, you need to disable this option and set the first 2 options in worldserver.conf yourself.
 #
@@ -188,7 +207,8 @@ IndividualProgression.SimpleConfigOverride = 1
 
 # IndividualProgression.DisableQuestMarkers
 #
-#        Description: Disable Quest Object markers and sparkles (added in patch 2.3)
+#        Description: (Only with Enable = 1 and OverrideCoreConfig = 1.)
+#                     Disable Quest Object markers and sparkles (added in patch 2.3)
 #
 #        Default:     1 - Markers and Sparkles Disabled
 #                     0 - Markers and Sparkles Enabled
@@ -197,7 +217,8 @@ IndividualProgression.DisableQuestMarkers = 1
 
 # IndividualProgression.DisableRDF
 #
-#        Description: Enable or disable the Random Dungeon Finder feature within the context of Individual Progression.
+#        Description: (Only with Enable = 1 and OverrideCoreConfig = 1.)
+#                     Enable or disable the Random Dungeon Finder feature within the context of Individual Progression.
 #                     Queuing for specific dungeons and Holiday Events will still be possible. (Use DungeonFinder.OptionsMask in worldserver.conf to completely disable the LFG tool.)
 #
 #        Default:     0 - RDF Enabled
@@ -207,7 +228,8 @@ IndividualProgression.DisableRDF = 0
 
 # IndividualProgression.MaxMonsterSight
 #
-#        Description: Enable or disable Max Monster Sight.
+#        Description: (Only with Enable = 1 and OverrideCoreConfig = 1.)
+#                     Enable or disable Max Monster Sight.
 #                     The AC default setting is 50 yards. Enabling this will increase the range to 80 yards.
 #                     The reason behind this are the tower and bunker archers in Alterac Valley. 
 #                     This does NOT effect aggro range.

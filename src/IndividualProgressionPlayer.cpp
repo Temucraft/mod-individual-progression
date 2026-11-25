@@ -38,7 +38,11 @@ public:
     void OnPlayerLogin(Player* player) override
     {
         if (!sIndividualProgression->enabled)
+        {
+            // Out: take off IP's auras in case a character still carries one.
+            sIndividualProgression->CheckAdjustments(player);
             return;
+        }
 
         if (!player || !player->IsInWorld())
             return;
@@ -97,7 +101,7 @@ public:
 
     void OnPlayerLevelChanged(Player* player, uint8 /*oldLevel*/) override
     {
-        if (!player || !player->IsInWorld())
+        if (!sIndividualProgression->enabled || !player || !player->IsInWorld())
             return;
 
         if (sIndividualProgression->isBotAccount(player))
@@ -1279,6 +1283,9 @@ public:
         if (!player || !pItem)
             return false;
 
+        if (!sIndividualProgression->enabled)
+            return true;
+
         if (pItem->GetTemplate()->RequiredHonorRank == 0)
             return true;
 
@@ -1381,7 +1388,7 @@ public:
 
     void OnAddMember(Group* group, ObjectGuid guid) override
     {
-        if (!group || !guid)
+        if (!sIndividualProgression->enabled || !group || !guid)
             return;
 
         Player* added = ObjectAccessor::FindPlayer(guid);

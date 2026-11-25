@@ -22,11 +22,18 @@ public:
             { "setrep", HandleSetRepIndividualProgressionCommand, SEC_GAMEMASTER,    Console::Yes },
             { "pvp",    HandlePVPIndividualProgressionCommand,    SEC_GAMEMASTER,    Console::Yes },
             { "attune", HandleAttuneIndividualProgressionCommand, SEC_GAMEMASTER,    Console::Yes },
+            { "status", HandleStatusIndividualProgressionCommand, SEC_GAMEMASTER,    Console::Yes },
+        };
+
+        static ChatCommandTable progressionTable =
+        {
+            { "status", HandleStatusIndividualProgressionCommand, SEC_GAMEMASTER,    Console::Yes },
         };
 
         static ChatCommandTable commandTable =
         {
             { "ip", ipTable },
+            { "progression", progressionTable },
         };
 
         return commandTable;
@@ -63,6 +70,30 @@ public:
             if (target->HasAchieved(achievementId))
                 sIndividualProgression->RemovePlayerAchievement(playerGUID, achievementId);
         }
+    }
+
+    // .progression status / .ip status: is the world database In or Out, and does the config agree?
+    static bool HandleStatusIndividualProgressionCommand(ChatHandler* handler)
+    {
+        IndividualProgression::DatabaseState const now = IndividualProgression::DetectDatabaseState();
+        bool const configIn = sIndividualProgression->enabled;
+
+        handler->PSendSysMessage("Individual Progression config: |cff00ffff{}|r (Enable = {}, OverrideCoreConfig = {})",
+            configIn ? "In" : "Out", configIn ? 1 : 0, sIndividualProgression->overrideCoreConfig ? 1 : 0);
+        handler->PSendSysMessage("World database: |cff00ffff{}|r (Ghost Wolf and Gift of the Wild trainer levels)",
+            IndividualProgression::DatabaseStateName(now));
+
+        if (now != sIndividualProgression->databaseState)
+            handler->PSendSysMessage("At start-up the database was {}. Restart the world server so IP picks up the change.",
+                IndividualProgression::DatabaseStateName(sIndividualProgression->databaseState));
+
+        bool const agree = (configIn && now == IndividualProgression::IP_DB_IN) || (!configIn && now == IndividualProgression::IP_DB_OUT);
+        if (agree)
+            handler->SendSysMessage("Config and database agree.");
+        else
+            handler->PSendSysMessage("Config and database do NOT agree: run data/sql/optional/progression-{} or change IndividualProgression.Enable (module README, \"In / Out\").",
+                configIn ? "in" : "out");
+        return true;
     }
 
     static bool HandleGetIndividualProgressionCommand(ChatHandler* handler, Optional<PlayerIdentifier> player)

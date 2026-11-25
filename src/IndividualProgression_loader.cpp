@@ -2,6 +2,8 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license: https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3
  */
 
+#include "Config.h"
+
 // From SC
 void AddSC_mod_individual_progression();
 void AddSC_boss_onyxia_40();
@@ -68,27 +70,34 @@ void Addmod_individual_progressionScripts()
     AddSC_boss_lord_kazzak_60_2();
     AddSC_boss_chromaggus_60_2_A();
     AddSC_boss_drakkisath_50_59_B();
-    AddSC_instance_naxxramas();
-    AddSC_boss_anubrekhan_40();
-    AddSC_boss_faerlina_40();
-    AddSC_boss_four_horsemen_40();
-    AddSC_boss_gluth_40();
-    AddSC_boss_gothik_40();
-    AddSC_boss_grobbulus_40();
-    AddSC_boss_heigan_40();
-    AddSC_boss_kelthuzad_40();
-    AddSC_boss_loatheb_40();
-    AddSC_boss_maexxna_40();
-    AddSC_boss_noth_40();
-    AddSC_boss_patchwerk_40();
-    AddSC_boss_razuvious_40();
-    AddSC_boss_sapphiron_40();
-    AddSC_boss_thaddius_40();
-    AddSC_npc_omarion_40();
-    AddSC_custom_spells_40();
-    AddSC_custom_creatures_40();
-    AddSC_custom_gameobjects_40();
-    AddSC_custom_scripts_40();
+    // Naxxramas: IP's combined 10/25/40 scripts use the same script names as the core's Naxxramas scripts
+    // (instance_naxxramas, several boss spells and creatures) and so replace them. With
+    // IndividualProgression.Enable = 0 ("Out") they are not loaded and the core's own Naxxramas runs.
+    // The world config is read before scripts load; changing Enable needs a restart anyway.
+    if (sConfigMgr->GetOption<bool>("IndividualProgression.Enable", false))
+    {
+        AddSC_instance_naxxramas();
+        AddSC_boss_anubrekhan_40();
+        AddSC_boss_faerlina_40();
+        AddSC_boss_four_horsemen_40();
+        AddSC_boss_gluth_40();
+        AddSC_boss_gothik_40();
+        AddSC_boss_grobbulus_40();
+        AddSC_boss_heigan_40();
+        AddSC_boss_kelthuzad_40();
+        AddSC_boss_loatheb_40();
+        AddSC_boss_maexxna_40();
+        AddSC_boss_noth_40();
+        AddSC_boss_patchwerk_40();
+        AddSC_boss_razuvious_40();
+        AddSC_boss_sapphiron_40();
+        AddSC_boss_thaddius_40();
+        AddSC_npc_omarion_40();
+        AddSC_custom_spells_40();
+        AddSC_custom_creatures_40();
+        AddSC_custom_gameobjects_40();
+        AddSC_custom_scripts_40();
+    }
     AddSC_Ipp_Wotlk_Modded_Scripts();
     AddSC_aq_scripts();
     AddSC_aq_we_scripts();

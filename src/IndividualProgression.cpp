@@ -29,7 +29,15 @@ uint8 IndividualProgression::GetPlayerProgressionFromQuests(Player* player) cons
 
 bool IndividualProgression::hasPassedProgression(Player* player, ProgressionState state) const
 {
-    if (!enabled || !state || !player || !player->IsInWorld())
+    if (!state)
+        return false;
+
+    // "Out" (Enable = 0): nothing is gated, and every era check answers as for the last stage
+    // (PROGRESSION_WOTLK_TIER_5), so era NPCs and objects show the Wrath world, not every era at once.
+    if (!enabled)
+        return true;
+
+    if (!player || !player->IsInWorld())
         return false;
 
     if (progressionLimit && (state > progressionLimit))
@@ -40,6 +48,10 @@ bool IndividualProgression::hasPassedProgression(Player* player, ProgressionStat
 
 bool IndividualProgression::isBeforeProgression(Player* player, ProgressionState state)
 {
+    // "Out" (Enable = 0): as for the last stage, nothing is "before" any stage.
+    if (!sIndividualProgression->enabled)
+        return false;
+
     if (!state || !player || !player->IsInWorld())
         return false;
 
@@ -104,18 +116,61 @@ void IndividualProgression::ForceUpdateProgressionState(Player* player, Progress
 
 void IndividualProgression::CheckAdjustments(Player* player) const
 {
-    if (!enabled || !player || !player->IsInWorld())
+    if (!player || !player->IsInWorld())
         return;
 
-    if (player->getClass() == CLASS_HUNTER)
-    {
-        // Remove the 15% built-in ranged haste that was added to hunters in WotLK - This lets us add haste spells back to quivers
-        player->RemoveAura(RANGED_HASTE_SPELL);
-        player->CastSpell(player, RANGED_HASTE_SPELL, false);
-    }
-
+    // IP's old adjustment auras are never wanted any more, In or Out.
     player->RemoveAura(HP_AURA_SPELL);
     player->RemoveAura(ABSORB_SPELL);
+
+    if (player->getClass() != CLASS_HUNTER)
+        return;
+
+    // Hunters: aura 89507 takes away the 15% ranged haste WotLK built into hunters. It exists to make up for
+    // the haste IP's item SQL (progression-in) gives back to Vanilla/TBC quivers and ammo pouches. That item
+    // change is global (every stage sees the same item_template), so the aura belongs to every stage, but
+    // only while IP is enabled AND the database is In. Out (or a stock database) keeps the stock 15% haste.
+    player->RemoveAura(RANGED_HASTE_SPELL);
+    if (enabled && databaseState == IP_DB_IN)
+        player->CastSpell(player, RANGED_HASTE_SPELL, false);
+}
+
+IndividualProgression::DatabaseState IndividualProgression::DetectDatabaseState()
+{
+    // Sentinels: two class trainer rows IP's class_trainers.sql moves and nothing else in Temucraft touches.
+    // Ghost Wolf (shaman trainer 14, spell 2645): stock 16, In 20.
+    // Gift of the Wild rank 1 (druid trainer 33, spell 21849): stock 50, In 61.
+    QueryResult result = WorldDatabase.Query("SELECT `SpellId`, `ReqLevel` FROM `trainer_spell` WHERE (`TrainerId` = 14 AND `SpellId` = 2645) OR (`TrainerId` = 33 AND `SpellId` = 21849)");
+    if (!result)
+        return IP_DB_UNKNOWN;
+
+    uint8 in = 0, out = 0, rows = 0;
+    do
+    {
+        uint32 spellId = (*result)[0].Get<uint32>();
+        uint8 reqLevel = (*result)[1].Get<uint8>();
+        ++rows;
+        if ((spellId == 2645 && reqLevel == 20) || (spellId == 21849 && reqLevel == 61))
+            ++in;
+        else if ((spellId == 2645 && reqLevel == 16) || (spellId == 21849 && reqLevel == 50))
+            ++out;
+    } while (result->NextRow());
+
+    if (rows == 2 && in == 2)
+        return IP_DB_IN;
+    if (rows == 2 && out == 2)
+        return IP_DB_OUT;
+    return IP_DB_UNKNOWN;
+}
+
+char const* IndividualProgression::DatabaseStateName(DatabaseState state)
+{
+    switch (state)
+    {
+        case IP_DB_IN:  return "In (progression-in applied)";
+        case IP_DB_OUT: return "Out (stock rows)";
+        default:        return "unknown (mixed or edited sentinel rows)";
+    }
 }
 
 float IndividualProgression::ComputeVanillaAdjustment(uint8 playerLevel, float configAdjustmentValue)
@@ -1090,7 +1145,7 @@ private:
     static void LoadConfig()
     {
         sIndividualProgression->customProgressionMap.clear();
-        sIndividualProgression->enabled = sConfigMgr->GetOption<bool>("IndividualProgression.Enable", true);
+        sIndividualProgression->enabled = sConfigMgr->GetOption<bool>("IndividualProgression.Enable", false);
         sIndividualProgression->vanillaPowerAdjustment = sConfigMgr->GetOption<float>("IndividualProgression.VanillaPowerAdjustment", 1);
         sIndividualProgression->vanillaHealingAdjustment = sConfigMgr->GetOption<float>("IndividualProgression.VanillaHealingAdjustment", 1);
         sIndividualProgression->tbcPowerAdjustment = sConfigMgr->GetOption<float>("IndividualProgression.TBCPowerAdjustment", 1);
@@ -1103,6 +1158,7 @@ private:
         sIndividualProgression->doableNaxx40Bosses_Razuvious = sConfigMgr->GetOption<bool>("IndividualProgression.doableNaxx40Bosses_Razuvious", false);
         sIndividualProgression->enforceGroupRules = sConfigMgr->GetOption<bool>("IndividualProgression.EnforceGroupRules", false);
         sIndividualProgression->fishingFix = sConfigMgr->GetOption<bool>("IndividualProgression.FishingFix", true);
+        sIndividualProgression->overrideCoreConfig = sConfigMgr->GetOption<bool>("IndividualProgression.OverrideCoreConfig", false);
         sIndividualProgression->simpleConfigOverride = sConfigMgr->GetOption<bool>("IndividualProgression.SimpleConfigOverride", true);
         sIndividualProgression->progressionLimit = sConfigMgr->GetOption<uint8>("IndividualProgression.ProgressionLimit", 0);
         sIndividualProgression->startingProgression = sConfigMgr->GetOption<uint8>("IndividualProgression.StartingProgression", 0);
@@ -1183,8 +1239,28 @@ public:
         LoadXpValues();
     }
 
+    void OnStartup() override
+    {
+        sIndividualProgression->databaseState = IndividualProgression::DetectDatabaseState();
+        bool const dbIn = sIndividualProgression->databaseState == IndividualProgression::IP_DB_IN;
+        LOG_INFO("module", "Individual Progression: config {}, database {}.",
+            sIndividualProgression->enabled ? "In (Enable = 1)" : "Out (Enable = 0)",
+            IndividualProgression::DatabaseStateName(sIndividualProgression->databaseState));
+
+        if (sIndividualProgression->enabled != dbIn)
+            LOG_WARN("module", "Individual Progression: IndividualProgression.Enable = {} but the world database is {}. "
+                "Run data/sql/optional/progression-{} (see the module README, \"In / Out\") or change the config.",
+                sIndividualProgression->enabled ? 1 : 0,
+                IndividualProgression::DatabaseStateName(sIndividualProgression->databaseState),
+                sIndividualProgression->enabled ? "in" : "out");
+    }
+
     void OnAfterConfigLoad(bool /*reload*/) override
     {
+        // Every change IP makes to core settings is opt-in: only with Enable = 1 and OverrideCoreConfig = 1.
+        if (!sIndividualProgression->enabled || !sIndividualProgression->overrideCoreConfig)
+            return;
+
         if (sIndividualProgression->simpleConfigOverride)
         {
             sWorld->setIntConfig(CONFIG_WATER_BREATH_TIMER, 60000);

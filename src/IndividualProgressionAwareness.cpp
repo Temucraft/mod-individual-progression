@@ -12,7 +12,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -98,7 +98,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -155,7 +155,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -183,7 +183,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -211,7 +211,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -239,7 +239,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -267,7 +267,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -328,7 +328,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -443,7 +443,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -471,7 +471,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -499,7 +499,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -527,7 +527,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -583,7 +583,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -611,7 +611,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -643,7 +643,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -671,7 +671,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -699,7 +699,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -727,7 +727,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -755,7 +755,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled)
+            if (player->IsGameMaster())
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
@@ -783,7 +783,7 @@ public:
 
         bool CanBeSeen(Player const* player) override
         {
-            if (player->IsGameMaster() || !sIndividualProgression->enabled || sIndividualProgression->earlyDungeonSet2)
+            if (player->IsGameMaster() || sIndividualProgression->earlyDungeonSet2)
                 return true;
 
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
